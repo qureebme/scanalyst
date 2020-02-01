@@ -1,0 +1,4 @@
+
+# Ignores the SonarQube folder because it's too large
+# It can be installed easily with SonarQube/install.sh
+SonarQube/sonarqube-*
