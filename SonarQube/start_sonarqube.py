@@ -1,6 +1,12 @@
 import os
+import platform
 
-cmd = 'sonarqube-*/bin/linux-x86-64/sonar.sh console' # Unix
-# TODO Make it work also on windowsp
+cmd = ""
+if platform.system() == "Linux":
+	cmd = "sonarqube-*/bin/linux-x86-64/sonar.sh console" # Linux
+if platform.system() == "Windows":
+	cmd = "cd sonarqube-*\\bin\windows-x86-64\ && call StartSonar.bat" # Windows
+if platform.system() == "Darwin":
+	cmd = "sonarqube-*/bin/macosx-universal-64/sonar.sh console" # Mac
 
 os.system(cmd)

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 VERSION=8.1.0.31237
 
 # TODO Verify prerequisits:
@@ -7,6 +9,3 @@ VERSION=8.1.0.31237
 wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-$VERSION.zip
 unzip sonarqube-$VERSION.zip
 rm sonarqube-$VERSION.zip 
-
-# Starts the server
-./start-server.sh
