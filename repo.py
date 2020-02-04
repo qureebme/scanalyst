@@ -14,7 +14,7 @@ assert not repo_.is_dirty()  # check if repo is dirty
 
 repo = pydriller.GitRepository(gitDir) # cloned repo object
 
-for commit in pydriller.RepositoryMining(gitDir).traverse_commits():
+for commit in pydriller.RepositoryMining(gitDir).traverse_commits(): #only .java files later
     hashh = commit.hash
     mssg = commit.msg
 
@@ -23,4 +23,13 @@ for commit in pydriller.RepositoryMining(gitDir).traverse_commits():
     
     for file in files:
         f = open(file, 'r')
+        content = f.read() # content of the current file
+
+        #what shall we do with this content?
+        #write it to a file?
+        currentCode = open('code.txt', 'a+') # code.java in final stuff
+        currentCode.write(content) # append mode: not so useful yet
+
+        # release system resources
         f.close()
+        currentCode.close()
