@@ -24,8 +24,6 @@ for commit in pydriller.RepositoryMining(gitDir, only_modifications_with_file_ty
     files = repo.files()
     fileCount = 0
 
-    #print('     ', hashh)
-
     for file in files:
         filename = file # string# component in final stuff
 
@@ -34,12 +32,11 @@ for commit in pydriller.RepositoryMining(gitDir, only_modifications_with_file_ty
 
         #what shall we do with this content?
         #write it to a file?
-        myfilename = './code/' + 'g12_' + hashh[0:5] + '/' + filename.rpartition('\\')[2]
-        ##currentCode = open(myfilename, 'a+') # code.java in final stuff
-        ##currentCode.write(content)
+        #myfilename = os.path.join(os.getcwd(), 'code', 'g12_', hashh[0:5]) + filename.rpartition('\\')[2]
+        myfilename = hashh[0:5] + filename.rpartition('\\')[2] # THIS WORKS!
+        currentCode = open(myfilename, 'a+') # code.java in final stuff
+        currentCode.write(content)
 
         # release system resources
         f.close()
         currentCode.close()
-
-
