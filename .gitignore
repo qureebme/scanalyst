@@ -1,0 +1,13 @@
+
+# Ignores the SonarQube folders because they are too large
+# They can be installed easily with SonarQube/install.sh
+SonarQube/sonarqube-*/
+.scannerwork/
+SonarQube/sonar-scanner-*/
+
+# PyCharm
+.idea/
+
+# Python trash files
+*.pyc
+__pycache__/
