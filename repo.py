@@ -6,7 +6,7 @@
 # On successful execution, a 'code' directory is created in the current directory
 # Each sub-directory in code contains the files in the repo for a particular commit
 # Each sub-directory is named g12_<first five chars of the commit hash>
-import os, git, pydriller
+import os, git, pydriller, csv
 currentDir = os.getcwd()
 
 def checkRepo(url):
@@ -23,35 +23,42 @@ def checkRepo(url):
     assert not repo_.is_dirty()  # check if repo is dirty
 
     repo = pydriller.GitRepository(gitDir) # cloned repo object
-    fullMeta = []
+
+    i=0
 
     for commit in pydriller.RepositoryMining(gitDir, only_modifications_with_file_types=['.java']).traverse_commits():
-        
 
-        dirs_arg = './code/' + 'g12_' + commit.hash[0:5]
+        i+=1
+        
+        dirs_arg = './code/' + 'g12_' + str(i)
         os.makedirs(dirs_arg)   # each commit gets a subdirectory in ./code
 
         repo.checkout(commit.hash)    # check out this commit
         files = repo.files()
 
         for file in files:
-            meta = [] #metadata. this should come with each analyzed file!
+            meta = {} #metadata. this should come with each analyzed file!
             filename = file
 
-            meta.append(('projectID', commit.project_name))
-            meta.append(('commitHash', commit.hash))
-            meta.append(('component', filename))
-            meta.append(('author', commit.author[0]))
-            meta.append(('commitMessage', commit.msg))
-            meta.append(('authorDate', commit.author_date))
-            meta.append(('authorTimezone', commit.author_timezone))
-            meta.append(('branches', commit.branches))
-            meta.append(('inMainBranch', commit.in_main_branch))
-            meta.append(('committer', commit.committer))
-            meta.append(('commiterDate', commit.committer_date))
-            meta.append(('parents', commit.parents))
-            meta.append(('merge', commit.merge))
+            meta['projectID']=commit.project_name
+            meta['commitHash']= commit.hash
+            meta['component']= filename
+            meta['author']= commit.author.name#[0]
+            meta['commitMessage']= commit.msg
+            meta['authorDate']= commit.author_date
+            meta['authorTimezone']= commit.author_timezone
+            meta['branches']= commit.branches
+            meta['inMainBranch']= commit.in_main_branch
+            meta['committer']= commit.committer
+            meta['commiterDate']= commit.committer_date
+            meta['parents']= commit.parents
+            meta['merge']= commit.merge
 
+            #writing data in csv
+            w = csv.writer(open(dirs_arg + '/'+"MetaData.csv", "w"))
+            for key, val in meta.items():
+                w.writerow([key, val])
+    
             f = open(file, 'r')
             content = f.read() # content of the current file
 
@@ -65,5 +72,4 @@ def checkRepo(url):
             # release system resources
             f.close()
             currentCode.close()
-            fullMeta.append(meta)
-    return fullMeta
+checkRepo("https://github.com/dizzam/java-project2017.git")
