@@ -1,7 +1,7 @@
 import os
 import platform
 import time
-import urllib2
+import urllib.request as urllib # replace by urllib2 on Python2
 
 # Useful variables -------------------------------------------------------------
 
@@ -43,15 +43,16 @@ def stop_server():
 # Returns true if the server is up and ready to scan
 def __is_server_up():
     try:
-        contents = urllib2.urlopen("http://localhost:9000/api/system/status").read()
-        return contents.find('status":"UP"') != -1
+        contents = urllib.urlopen("http://localhost:9000/api/system/status").read()
+        print(contents)
+        return contents.find(b'"status":"UP"') != -1
     except:
         return False
 
 
 # Waits until the server is ready to scan (tests every 2 seconds)
 # BLOCKING
-def __wait_for_server_startup(): 
+def __wait_for_server_startup():
     serverUp = False
     # Sends requests to the api until the response contains status:ON
     while(not __is_server_up()):
@@ -81,6 +82,6 @@ def run_analysis():
 
 # Returns the analysis results in the form of a json string
 def get_analysis_results():
-    return urllib2.urlopen("http://localhost:9000/api/issues/search").read()
+    return str(urllib.urlopen("http://localhost:9000/api/issues/search").read(), "utf-8")
 
 

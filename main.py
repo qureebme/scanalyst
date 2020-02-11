@@ -1,9 +1,10 @@
-import sys, csv, json
+import sys, csv, json, os
+
 if len(sys.argv)<2:
     raise ValueError ("The program expects a git URL as an argument")
 
 import repo
-checkRepo(sys.argv[1])
+repo.checkRepo(sys.argv[1])
 
 
 from SonarQube import sonarqube as sq
@@ -16,16 +17,21 @@ for root, dirs,_ in os.walk("./code/", topdown=False):
         with open(os.path.join(root, name)+'/MetaData.csv', mode='r') as infile:
             reader = csv.reader(infile)
             metaData = {rows[0]:rows[1] for rows in reader}
+
+        print("\n\n" + os.path.join(os.getcwd(), "code/" + name + "/") + "\n\n")
+
         # Configures the sonar scanner to scan in the given folder
-        sq.configure(os.path.join(root, name), "DefaultProjectKey")
+        sq.configure(os.path.join(os.getcwd(), "code/" + name + "/"), "DefaultProjectKey")
 
         # Runs the analysis
         sq.run_analysis() # Blocking
 
         # Fetches the analysis results
-        json_data=json.loads(sq.get_analysis_results())
+        content = sq.get_analysis_results()
+        print(content)
+        json_data=json.loads(content)
         for i in json_data["issues"]:
-            dic={"rule":"","severity":"":"","status":"","message":"","effort":"",
+            dic={"rule":"","severity":"","status":"","message":"","effort":"",
                 "debt":"","type":"","creationDate":"","startLine":"","endLine":"",
                  "projectName":metaData["projectID"],"creationCommitHash":metaData["commitHash"],
                  "author":metaData["author"]}
@@ -45,4 +51,4 @@ for root, dirs,_ in os.walk("./code/", topdown=False):
 import ParsingToCsv as ptc
 ptc.make_csv(output_data)
            
-sq.stop_server() # Asynchronous
+# sq.stop_server() # Asynchronous

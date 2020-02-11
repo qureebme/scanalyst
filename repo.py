@@ -65,11 +65,13 @@ def checkRepo(url):
             #what shall we do with this content?
             #write it to a file?
 
-            myfilename = dirs_arg + '/' + filename.rpartition('\\')[2]
+            myfilename = dirs_arg + '/' + filename.rpartition('/')[2]
             currentCode = open(myfilename, 'a+')
             currentCode.write(content)
 
             # release system resources
             f.close()
             currentCode.close()
-checkRepo("https://github.com/dizzam/java-project2017.git")
+
+
+# checkRepo("https://github.com/dizzam/java-project2017.git")
