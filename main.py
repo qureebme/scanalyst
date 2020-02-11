@@ -18,17 +18,14 @@ for root, dirs,_ in os.walk("./code/", topdown=False):
             reader = csv.reader(infile)
             metaData = {rows[0]:rows[1] for rows in reader}
 
-        print("\n\n" + os.path.join(os.getcwd(), "code/" + name + "/") + "\n\n")
-
         # Configures the sonar scanner to scan in the given folder
-        sq.configure(os.path.join(os.getcwd(), "code/" + name + "/"), "DefaultProjectKey")
+        sq.configure(os.path.join(root, name), "DefaultProjectKey")
 
         # Runs the analysis
         sq.run_analysis() # Blocking
 
         # Fetches the analysis results
         content = sq.get_analysis_results()
-        print(content)
         json_data=json.loads(content)
         for i in json_data["issues"]:
             dic={"rule":"","severity":"","status":"","message":"","effort":"",

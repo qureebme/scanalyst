@@ -44,7 +44,6 @@ def stop_server():
 def __is_server_up():
     try:
         contents = urllib.urlopen("http://localhost:9000/api/system/status").read()
-        print(contents)
         return contents.find(b'"status":"UP"') != -1
     except:
         return False
