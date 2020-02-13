@@ -1,7 +1,0 @@
-Web API documentation resources
-
-Locally (server must be started):
-- http://localhost:9000/api/webservices/list
-
-Online
-- https://docs.sonarqube.org/display/SONARQUBE43/Web+Service+API
