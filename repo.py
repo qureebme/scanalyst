@@ -48,35 +48,38 @@ def checkRepo(url):
             meta = {} #metadata. this should come with each analyzed file!
             filename = file
 
-            meta['projectID']=commit.project_name
-            meta['commitHash']= commit.hash
-            meta['component']= filename
-            meta['author']= commit.author.name
-            meta['commitMessage']= commit.msg
-            meta['authorDate']= commit.author_date
-            meta['authorTimezone']= commit.author_timezone
-            meta['branches']= commit.branches
-            meta['inMainBranch']= commit.in_main_branch
-            meta['committer']= commit.committer
-            meta['commiterDate']= commit.committer_date
-            meta['parents']= commit.parents
-            meta['merge']= commit.merge
+            if (filename.endswith('.java')):
 
-            #writing data in csv
-            w = csv.writer(open(dirs_arg + '/'+"MetaData.csv", "w"))
-            for key, val in meta.items():
-                w.writerow([key, val])
-    
-            f = open(file, 'r')
-            content = f.read() # content of the current file
+                meta['projectID']=commit.project_name
+                meta['commitHash']= commit.hash
+                meta['component']= filename
+                meta['author']= commit.author.name
+                meta['commitMessage']= commit.msg
+                meta['authorDate']= commit.author_date
+                meta['authorTimezone']= commit.author_timezone
+                meta['branches']= commit.branches
+                meta['inMainBranch']= commit.in_main_branch
+                meta['committer']= commit.committer
+                meta['commiterDate']= commit.committer_date
+                meta['parents']= commit.parents
+                meta['merge']= commit.merge
 
-            myfilename = dirs_arg + '/' + filename.rpartition('/')[2]
-            currentCode = open(myfilename, 'a+')
-            currentCode.write(content)
+                #writing data in csv
+                w = csv.writer(open(dirs_arg + '/'+"MetaData.csv", "w"))
+                for key, val in meta.items():
+                    w.writerow([key, val])
+                
+                f = open(file, 'r')
+                content = f.read() # content of the current file
 
-            # release system resources
-            f.close()
-            currentCode.close()
+                myfilename = dirs_arg + '/' + filename.rpartition('/')[2]
+
+                currentCode = open(myfilename, 'a+')
+                currentCode.write(content)
+
+                # release system resources
+                f.close()
+                currentCode.close()
 
 
-# checkRepo("https://github.com/dizzam/java-project2017.git")
+#checkRepo("https://github.com/dizzam/java-project2017.git")
