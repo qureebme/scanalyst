@@ -1,11 +1,10 @@
 # It is assumed that this code will be run from a directory in which the user has RW access.
-# The repository will be cloned to this directory. The program breaks if the repo already
-# exists in this directory, or if the cloned repo is empty
-# For multiple runs, delete the files created from the previous run.
+# The repository will be cloned to this directory. The program breaks if the cloned repo is empty,
+# or dirty. For multiple runs, delete the /code directory created from the previous run.
 
 # On successful execution, a 'code' directory is created in the current directory
 # Each sub-directory in code contains the files in the repo for a particular commit
-# Each sub-directory is named g12_<first five chars of the commit hash>
+# Each sub-directory is named g12_<an integer>
 import os, git, pydriller, csv
 currentDir = os.getcwd()
 
@@ -14,8 +13,17 @@ def checkRepo(url):
     gitHubRepo = url 
     gitDir = gitHubRepo.rsplit('/', 1)[1].rsplit('.')[0] # extract dir name from url, same as project name
 
-    assert os.path.exists(gitDir) is False # to ensure the dir doesnt already exist
-    git.Git(currentDir).clone(gitHubRepo) # clone the repo
+    if not (os.path.exists(gitDir)):
+        git.Git(currentDir).clone(gitHubRepo) # clone the repo
+    else:
+        # do some cleanup, just in case...
+        cmd2 = 'git checkout master'
+        cmd3 = 'git branch -D _PD'
+
+        os.chdir(gitDir)
+        os.system(cmd2)
+        os.system(cmd3)
+        os.chdir('../')
 
     repo_ = git.Repo(gitDir)
     assert repo_.__class__ is git.Repo
@@ -43,7 +51,7 @@ def checkRepo(url):
             meta['projectID']=commit.project_name
             meta['commitHash']= commit.hash
             meta['component']= filename
-            meta['author']= commit.author.name#[0]
+            meta['author']= commit.author.name
             meta['commitMessage']= commit.msg
             meta['authorDate']= commit.author_date
             meta['authorTimezone']= commit.author_timezone
@@ -61,9 +69,6 @@ def checkRepo(url):
     
             f = open(file, 'r')
             content = f.read() # content of the current file
-
-            #what shall we do with this content?
-            #write it to a file?
 
             myfilename = dirs_arg + '/' + filename.rpartition('/')[2]
             currentCode = open(myfilename, 'a+')
