@@ -12,11 +12,13 @@ from SonarQube import sonarqube as sq
 sq.start_server() # Blocking
 
 output_data=[]
+commit_data=[]
 with os.scandir("./code/") as entries:
     for entry in entries:
         with open("./code/"+entry.name+'/MetaData.csv', mode='r') as infile:
             reader = csv.reader(infile)
             metaData = {rows[0]:rows[1] for rows in reader}
+            commit_data.append(metaData)
 
         # Configures the sonar scanner to scan in the given folder
         sq.configure("./code/"+entry.name), "DefaultProjectKey")
@@ -28,10 +30,13 @@ with os.scandir("./code/") as entries:
         content = sq.get_analysis_results()
         json_data=json.loads(content)
         for i in json_data["issues"]:
+        
             dic={"rule":"","severity":"","status":"","message":"","effort":"",
                 "debt":"","type":"","creationDate":"","startLine":"","endLine":"",
-                 "projectName":metaData["projectID"],"creationCommitHash":metaData["commitHash"],
-                 "author":metaData["author"]}
+                "projectName":metaData["projectID"],
+                "creationCommitHash":metaData["commitHash"],
+                "author":metaData["author"]}
+                
             for j in ["rule","severity","project","status","message","effort",
                       "debt","type","creationDate"]:
                 try:
@@ -46,6 +51,19 @@ with os.scandir("./code/") as entries:
             output_data.append(dic)
 
 import ParsingToCsv as ptc
-ptc.make_csv(output_data)
-           
+
+fieldnames=["projectName","creationDate",
+"creationCommitHash","type","squid","component",
+"severity","startLine","endLine","resolution",
+"status","message","effort","debt","author"])
+
+ptc.make_csv(output_data,"AnalysisResults",fieldnames)
+
+fieldnames=["projectID","commitHash","commitMessage",
+"author","authorDate","authorTimezone","committer",
+"committerDate","committerTimezone","branches",
+"inMainBranch","merge","parents"]
+
+ptc.make_csv(commit_data,"CommitData",fieldnames)
+
 # sq.stop_server() # Asynchronous
