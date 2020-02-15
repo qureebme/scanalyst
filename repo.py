@@ -6,6 +6,8 @@
 # Each sub-directory in code contains the files in the repo for a particular commit
 # Each sub-directory is named g12_<an integer>
 import os, git, pydriller, csv
+import copyDir, shutil
+
 currentDir = os.getcwd()
 
 def checkRepo(url):
@@ -30,20 +32,28 @@ def checkRepo(url):
     assert not repo_.bare
     assert not repo_.is_dirty()  # check if repo is dirty
 
+    if not (os.path.exists('./code')):
+        os.makedirs('./code')
+
     repo = pydriller.GitRepository(gitDir) # cloned repo object
 
     i=0
-
-    for commit in pydriller.RepositoryMining(gitDir, only_modifications_with_file_types=['.java']).traverse_commits():
+    for commit in pydriller.RepositoryMining(gitDir, only_modifications_with_file_types=['.js']).traverse_commits():
 
         i+=1
         
-        dirs_arg = './code/' + 'g12_' + str(i)
-        os.makedirs(dirs_arg)   # each commit gets a subdirectory in ./code
+        dirs_arg = 'g12_' + str(i) # dir for this commit
+        #os.makedirs(dirs_arg)   # each commit gets a subdirectory in ./code
 
         repo.checkout(commit.hash)    # check out this commit
-        files = repo.files()
+        #files = repo.files()    # files in this commit
+        os.chdir('./code')
+        dirr = '../' + gitDir
+        shutil.copytree(dirr, dirs_arg, copy_function=copyDir.copy_dir)
+        os.chdir('../')
 
+
+        '''
         for file in files:
             meta = {} #metadata. this should come with each analyzed file!
             filename = file
@@ -80,6 +90,8 @@ def checkRepo(url):
                 # release system resources
                 f.close()
                 currentCode.close()
+        '''
 
 
 #checkRepo("https://github.com/dizzam/java-project2017.git")
+checkRepo("https://github.com/qureebme/fullStackOpen3.git")
