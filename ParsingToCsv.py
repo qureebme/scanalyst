@@ -1,8 +1,8 @@
 import csv
 
-def make_csv(dicos):
-    with open ("project_template.csv", 'w', newline="") as csvfile:
-        writer= csv.DictWriter(csvfile, fieldnames=dicos[0].keys())
+def make_csv(dicos,name="DefaultName",headers=None):
+    with open (name+".csv", 'w', newline="") as csvfile:
+        writer=csv.DictWriter(csvfile,filednames=headers if headers else dicos[0].keys())
 
         writer.writeheader()
         for i in dicos:

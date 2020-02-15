@@ -1,4 +1,4 @@
-import sys, csv, json, os
+import sys, csv, json, os, shutil
 
 if len(sys.argv)<2:
     raise ValueError ("The program expects a git URL as an argument")
@@ -12,14 +12,16 @@ from SonarQube import sonarqube as sq
 sq.start_server() # Blocking
 
 output_data=[]
-for root, dirs,_ in os.walk("./code/", topdown=False):
-    for name in dirs:
-        with open(os.path.join(root, name)+'/MetaData.csv', mode='r') as infile:
+commit_data=[]
+with os.scandir("./code/") as entries:
+    for entry in entries:
+        with open("./code/"+entry.name+'/MetaData.csv', mode='r') as infile:
             reader = csv.reader(infile)
             metaData = {rows[0]:rows[1] for rows in reader}
+            commit_data.append(metaData)
 
         # Configures the sonar scanner to scan in the given folder
-        sq.configure(os.path.join(root, name), "DefaultProjectKey")
+        sq.configure("./code/"+entry.name, "DefaultProjectKey")
 
         # Runs the analysis
         sq.run_analysis() # Blocking
@@ -28,10 +30,13 @@ for root, dirs,_ in os.walk("./code/", topdown=False):
         content = sq.get_analysis_results()
         json_data=json.loads(content)
         for i in json_data["issues"]:
+        
             dic={"rule":"","severity":"","status":"","message":"","effort":"",
                 "debt":"","type":"","creationDate":"","startLine":"","endLine":"",
-                 "projectName":metaData["projectID"],"creationCommitHash":metaData["commitHash"],
-                 "author":metaData["author"]}
+                "projectName":metaData["projectID"],
+                "creationCommitHash":metaData["commitHash"],
+                "author":metaData["author"]}
+                
             for j in ["rule","severity","project","status","message","effort",
                       "debt","type","creationDate"]:
                 try:
@@ -46,6 +51,22 @@ for root, dirs,_ in os.walk("./code/", topdown=False):
             output_data.append(dic)
 
 import ParsingToCsv as ptc
-ptc.make_csv(output_data)
-           
+
+fieldnames=["projectName","creationDate",
+"creationCommitHash","type","squid","component",
+"severity","startLine","endLine","resolution",
+"status","message","effort","debt","author"]
+
+ptc.make_csv(output_data,"AnalysisResults",fieldnames)
+
+fieldnames=["projectID","commitHash","commitMessage",
+"author","authorDate","authorTimezone","committer",
+"committerDate","committerTimezone","branches",
+"inMainBranch","merge","parents"]
+
+ptc.make_csv(commit_data,"CommitData",fieldnames)
+
+
+shutil.rmtree("./code", ignore_errors=True)
+
 # sq.stop_server() # Asynchronous

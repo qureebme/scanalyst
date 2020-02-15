@@ -61,7 +61,7 @@ def checkRepo(url):
 
                 meta['projectID']=commit.project_name
                 meta['commitHash']= commit.hash
-                meta['component']= filename
+                meta['committerTimezone']=commit.committer_timezone
                 meta['author']= commit.author.name
                 meta['commitMessage']= commit.msg
                 meta['authorDate']= commit.author_date
