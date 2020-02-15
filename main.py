@@ -21,7 +21,7 @@ with os.scandir("./code/") as entries:
             commit_data.append(metaData)
 
         # Configures the sonar scanner to scan in the given folder
-        sq.configure("./code/"+entry.name), "DefaultProjectKey")
+        sq.configure("./code/"+entry.name, "DefaultProjectKey")
 
         # Runs the analysis
         sq.run_analysis() # Blocking
@@ -55,7 +55,7 @@ import ParsingToCsv as ptc
 fieldnames=["projectName","creationDate",
 "creationCommitHash","type","squid","component",
 "severity","startLine","endLine","resolution",
-"status","message","effort","debt","author"])
+"status","message","effort","debt","author"]
 
 ptc.make_csv(output_data,"AnalysisResults",fieldnames)
 
