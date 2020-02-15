@@ -74,7 +74,7 @@ def checkRepo(url):
                 meta['merge']= commit.merge
 
                 #writing data in csv
-                w = csv.writer(open('./code/' + dirs_arg + '/'+"MetaData.csv", "w"))
+                w = csv.writer(open('./code/' + dirs_arg + '/'+"MetaData.csv", "w", encoding='utf-8'))
                 for key, val in meta.items():
                     w.writerow([key, val])
                 
