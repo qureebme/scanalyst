@@ -42,24 +42,21 @@ def checkRepo(url):
 
         i+=1
         
-        dirs_arg = 'g12_' + str(i) # dir for this commit
-        #os.makedirs(dirs_arg)   # each commit gets a subdirectory in ./code
+        dirs_arg = 'g12_' + str(i)      # dir for this commit
 
-        repo.checkout(commit.hash)    # check out this commit
-        #files = repo.files()    # files in this commit
+        repo.checkout(commit.hash)      # check out this commit
+        files = repo.files()            # files in this commit
         os.chdir('./code')
         dirr = '../' + gitDir
         shutil.copytree(dirr, dirs_arg, copy_function=copyDir.copy_dir)
-        os.chdir('../')
+        os.chdir('../') # go back up
 
-
-        '''
         for file in files:
             meta = {} #metadata. this should come with each analyzed file!
             filename = file
 
-            if (filename.endswith('.java')):
-
+            if (filename.endswith('.js')):
+                '''
                 meta['projectID']=commit.project_name
                 meta['commitHash']= commit.hash
                 meta['component']= filename
@@ -73,25 +70,27 @@ def checkRepo(url):
                 meta['commiterDate']= commit.committer_date
                 meta['parents']= commit.parents
                 meta['merge']= commit.merge
-
+                '''
+                '''
                 #writing data in csv
                 w = csv.writer(open(dirs_arg + '/'+"MetaData.csv", "w"))
                 for key, val in meta.items():
                     w.writerow([key, val])
-                
-                f = open(file, 'r')
+                '''
+
+                filePath = os.getcwd() + '\\' + filename # *****
+
+                f = open(filePath, 'r')
                 content = f.read() # content of the current file
 
-                myfilename = dirs_arg + '/' + filename.rpartition('/')[2]
+                x = '.\\code\\' + dirs_arg + filename.replace(gitDir, '')   # *****
 
-                currentCode = open(myfilename, 'a+')
+                currentCode = open( x, 'a+')
                 currentCode.write(content)
 
                 # release system resources
                 f.close()
                 currentCode.close()
-        '''
-
 
 #checkRepo("https://github.com/dizzam/java-project2017.git")
 checkRepo("https://github.com/qureebme/fullStackOpen3.git")
