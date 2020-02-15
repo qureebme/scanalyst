@@ -63,11 +63,13 @@ def __wait_for_server_startup():
 # Sets the project folder and its name for the scanner
 # TODO do a proper modification of the concerned field instead of this shit
 # TODO make projectKey optionnal (to be able to change dir without changing key)
+# TODO find a solution for the Java binaries
 def configure(projectPath, projectKey):
     path = __scanner_folder + "conf/sonar-scanner.properties"
     file = open(path, "w+")
     content = "sonar.projectKey=" + projectKey + "\n" \
-              "sonar.projectBaseDir=" + projectPath + "\n"
+              "sonar.projectBaseDir=" + projectPath + "\n" \
+              "sonar.java.binaries=../../SonarQube/tmp"
     file.write(content)
     file.close()
 

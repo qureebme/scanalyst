@@ -41,7 +41,7 @@ def checkRepo(url):
     repo = pydriller.GitRepository(gitDir) # cloned repo object
 
     i=0
-    for commit in pydriller.RepositoryMining(gitDir, only_modifications_with_file_types=['.js']).traverse_commits():
+    for commit in pydriller.RepositoryMining(gitDir, only_modifications_with_file_types=['.java']).traverse_commits():
 
         i+=1
         dirs_arg = 'g12_' + str(i)      # dir for this commit
@@ -57,7 +57,7 @@ def checkRepo(url):
             meta = {} #metadata. this should come with each analyzed file!
             filename = file
 
-            if (filename.endswith('.js')):
+            if (filename.endswith('.java')):
 
                 meta['projectID']=commit.project_name
                 meta['commitHash']= commit.hash
