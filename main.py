@@ -12,14 +12,14 @@ from SonarQube import sonarqube as sq
 sq.start_server() # Blocking
 
 output_data=[]
-for root, dirs,_ in os.walk("./code/", topdown=False):
-    for name in dirs:
-        with open(os.path.join(root, name)+'/MetaData.csv', mode='r') as infile:
+with os.scandir("./code/") as entries:
+    for entry in entries:
+        with open("./code/"+entry.name+'/MetaData.csv', mode='r') as infile:
             reader = csv.reader(infile)
             metaData = {rows[0]:rows[1] for rows in reader}
 
         # Configures the sonar scanner to scan in the given folder
-        sq.configure(os.path.join(root, name), "DefaultProjectKey")
+        sq.configure("./code/"+entry.name), "DefaultProjectKey")
 
         # Runs the analysis
         sq.run_analysis() # Blocking
