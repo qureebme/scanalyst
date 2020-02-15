@@ -57,6 +57,7 @@ def checkRepo(url):
             meta = {} #metadata. this should come with each analyzed file!
             filename = file
 
+<<<<<<< HEAD
             if (filename.endswith('.js')):
 
                 meta['projectID']=commit.project_name
@@ -93,3 +94,73 @@ def checkRepo(url):
                 currentCode.close()
 
 #checkRepo("https://github.com/dizzam/java-project2017.git")
+||||||| merged common ancestors
+            meta['projectID']=commit.project_name
+            meta['commitHash']= commit.hash
+            meta['component']= filename
+            meta['author']= commit.author.name
+            meta['commitMessage']= commit.msg
+            meta['authorDate']= commit.author_date
+            meta['authorTimezone']= commit.author_timezone
+            meta['branches']= commit.branches
+            meta['inMainBranch']= commit.in_main_branch
+            meta['committer']= commit.committer
+            meta['commiterDate']= commit.committer_date
+            meta['parents']= commit.parents
+            meta['merge']= commit.merge
+
+            #writing data in csv
+            w = csv.writer(open(dirs_arg + '/'+"MetaData.csv", "w"))
+            for key, val in meta.items():
+                w.writerow([key, val])
+    
+            f = open(file, 'r')
+            content = f.read() # content of the current file
+
+            myfilename = dirs_arg + '/' + filename.rpartition('/')[2]
+            currentCode = open(myfilename, 'a+')
+            currentCode.write(content)
+
+            # release system resources
+            f.close()
+            currentCode.close()
+
+
+# checkRepo("https://github.com/dizzam/java-project2017.git")
+=======
+            if (filename.endswith('.java')):
+
+                meta['projectID']=commit.project_name
+                meta['commitHash']= commit.hash
+                meta['component']= filename
+                meta['author']= commit.author.name
+                meta['commitMessage']= commit.msg
+                meta['authorDate']= commit.author_date
+                meta['authorTimezone']= commit.author_timezone
+                meta['branches']= commit.branches
+                meta['inMainBranch']= commit.in_main_branch
+                meta['committer']= commit.committer
+                meta['commiterDate']= commit.committer_date
+                meta['parents']= commit.parents
+                meta['merge']= commit.merge
+                '''
+                #writing data in csv
+                w = csv.writer(open(dirs_arg + '/'+"MetaData.csv", "w"))
+                for key, val in meta.items():
+                    w.writerow([key, val])
+                '''
+                f = open(file, 'r')
+                content = f.read() # content of the current file
+
+                myfilename = dirs_arg + '/' + filename.rpartition('/')[2]
+
+                currentCode = open(myfilename, 'a+')
+                currentCode.write(content)
+
+                # release system resources
+                f.close()
+                currentCode.close()
+
+
+#checkRepo("https://github.com/dizzam/java-project2017.git")
+>>>>>>> 96771f28af259c97a1a70f5f892e82708824d504
