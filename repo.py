@@ -3,8 +3,11 @@
 # or dirty. For multiple runs, delete the /code directory created from the previous run.
 
 # On successful execution, a 'code' directory is created in the current directory
-# Each sub-directory in code contains the files in the repo for a particular commit
+# Each sub-directory in code contains the files in the repo for a particular commit,
+# with the repo's directory structure preserved!
 # Each sub-directory is named g12_<an integer>
+# MetaData.csv is located in /g12_<an integer>
+
 import os, git, pydriller, csv
 import copyDir, shutil
 
@@ -41,7 +44,6 @@ def checkRepo(url):
     for commit in pydriller.RepositoryMining(gitDir, only_modifications_with_file_types=['.js']).traverse_commits():
 
         i+=1
-        
         dirs_arg = 'g12_' + str(i)      # dir for this commit
 
         repo.checkout(commit.hash)      # check out this commit
@@ -56,7 +58,7 @@ def checkRepo(url):
             filename = file
 
             if (filename.endswith('.js')):
-                '''
+
                 meta['projectID']=commit.project_name
                 meta['commitHash']= commit.hash
                 meta['component']= filename
@@ -70,20 +72,18 @@ def checkRepo(url):
                 meta['commiterDate']= commit.committer_date
                 meta['parents']= commit.parents
                 meta['merge']= commit.merge
-                '''
-                '''
+
                 #writing data in csv
-                w = csv.writer(open(dirs_arg + '/'+"MetaData.csv", "w"))
+                w = csv.writer(open('./code/' + dirs_arg + '/'+"MetaData.csv", "w"))
                 for key, val in meta.items():
                     w.writerow([key, val])
-                '''
-
-                filePath = os.getcwd() + '\\' + filename # *****
+                
+                filePath = os.getcwd() + '/' + filename
 
                 f = open(filePath, 'r')
                 content = f.read() # content of the current file
 
-                x = '.\\code\\' + dirs_arg + filename.replace(gitDir, '')   # *****
+                x = './code/' + dirs_arg + filename.replace(gitDir, '')
 
                 currentCode = open( x, 'a+')
                 currentCode.write(content)
@@ -93,4 +93,3 @@ def checkRepo(url):
                 currentCode.close()
 
 #checkRepo("https://github.com/dizzam/java-project2017.git")
-checkRepo("https://github.com/qureebme/fullStackOpen3.git")
