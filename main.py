@@ -1,4 +1,4 @@
-import sys, csv, json, os
+import sys, csv, json, os, shutil
 
 if len(sys.argv)<2:
     raise ValueError ("The program expects a git URL as an argument")
@@ -65,5 +65,8 @@ fieldnames=["projectID","commitHash","commitMessage",
 "inMainBranch","merge","parents"]
 
 ptc.make_csv(commit_data,"CommitData",fieldnames)
+
+
+shutil.rmtree("./code", ignore_errors=True)
 
 # sq.stop_server() # Asynchronous
