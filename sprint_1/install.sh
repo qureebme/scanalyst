@@ -35,3 +35,6 @@ pip3 install PyDriller
 # Installs sonarqube and sonar-scanner
 echo "Installing SonarQube and Sonar Scanner..."
 (cd SonarQube && ./install.sh)
+
+# Creates a temporary folder
+mkdir SonarQube/tmp
