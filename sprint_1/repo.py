@@ -68,7 +68,7 @@ def checkRepo(url):
                 meta['authorTimezone']= commit.author_timezone
                 meta['branches']= commit.branches
                 meta['inMainBranch']= commit.in_main_branch
-                meta['committer']= commit.committer
+                meta['committer']= commit.committer.name
                 meta['committerDate']= commit.committer_date
                 meta['parents']= commit.parents
                 meta['merge']= commit.merge
