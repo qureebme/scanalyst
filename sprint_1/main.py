@@ -21,7 +21,7 @@ with os.scandir("./code/") as entries:
             commit_data.append(metaData)
 
         # Configures the sonar scanner to scan in the given folder
-        sq.configure("./code/"+entry.name, "DefaultProjectKey")
+        sq.configure("./code/"+entry.name, "")
 
         # Runs the analysis
         sq.run_analysis() # Blocking
@@ -37,12 +37,13 @@ with os.scandir("./code/") as entries:
                 "creationCommitHash":metaData["commitHash"],
                 "author":metaData["author"]}
                 
-            for j in ["rule","severity","project","status","message","effort",
-                      "debt","type","creationDate"]:
+            for j in ["rule","severity","status","message","effort",
+                      "debt","type","creationDate","component"]:
                 try:
                     dic[j]=i[j]
                 except Exception:
                     continue
+            dic["squid"]=dic.pop("rule")
             try:
                 dic["startLine"]=i["textRange"]["startLine"]
                 dic["endLine"]=i["textRange"]["endLine"]
@@ -56,7 +57,6 @@ fieldnames=["projectName","creationDate",
 "creationCommitHash","type","squid","component",
 "severity","startLine","endLine","resolution",
 "status","message","effort","debt","author"]
-
 ptc.make_csv(output_data,"AnalysisResults",fieldnames)
 
 fieldnames=["projectID","commitHash","commitMessage",
