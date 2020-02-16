@@ -21,7 +21,7 @@ with os.scandir("./code/") as entries:
             commit_data.append(metaData)
 
         # Configures the sonar scanner to scan in the given folder
-        sq.configure("./code/"+entry.name, "")
+        sq.configure("./code/"+entry.name, "DefaultProjectKey")
 
         # Runs the analysis
         sq.run_analysis() # Blocking
@@ -35,15 +35,16 @@ with os.scandir("./code/") as entries:
                 "debt":"","type":"","creationDate":"","startLine":"","endLine":"",
                 "projectName":metaData["projectID"],
                 "creationCommitHash":metaData["commitHash"],
-                "author":metaData["author"]}
+                 "author":metaData["author"],"resolution":"null"}
                 
             for j in ["rule","severity","status","message","effort",
-                      "debt","type","creationDate","component"]:
+                      "debt","type","creationDate","component","resolution"]:
                 try:
                     dic[j]=i[j]
                 except Exception:
                     continue
             dic["squid"]=dic.pop("rule")
+            dic["component"]=dic["component"][18:]
             try:
                 dic["startLine"]=i["textRange"]["startLine"]
                 dic["endLine"]=i["textRange"]["endLine"]
