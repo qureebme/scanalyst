@@ -5,6 +5,9 @@ SonarQube/sonarqube-*/
 .scannerwork/
 SonarQube/sonar-scanner-*/
 
+#Emacs files
+*~
+
 # PyCharm
 .idea/
 
