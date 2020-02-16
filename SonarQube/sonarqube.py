@@ -1,20 +1,23 @@
 import os
+import os.path as path
 import platform
 import time
 import urllib.request as urllib # replace by urllib2 on Python2
 
 # Useful variables -------------------------------------------------------------
 
-# TODO do pattern matching instead of this shit (in case the version changes)
-
 # Installation directory of sonar-scanner
-__scanner_folder = __file__[:__file__.rfind("/")+1] + "sonar-scanner-4.2.0.1873-linux/"
+file = open("SonarQube/sonarscanner-folder", "r")
+__scanner_folder = file.read().replace("\n", "")
+file.close()
 
 # Installation directory of sonarqube server
-__server_folder = __file__[:__file__.rfind("/")+1] + "sonarqube-8.1.0.31237/"
+file = open("SonarQube/sonarserver-folder", "r")
+__server_folder = file.read().replace("\n", "")
+file.close()
 
 # Directory of the sonarqube server binaries
-__server_binaries_folder = __server_folder + "bin/"
+__server_binaries_folder = path.join(__server_folder, "bin/")
 if platform.system() == "Linux":
     __server_binaries_folder += "linux-x86-64/" # Linux
 if platform.system() == "Darwin":
@@ -27,7 +30,7 @@ if platform.system() == "Darwin":
 # TODO make it asynchronous with callback
 def start_server():
     # Starts the server
-    cmd = __server_binaries_folder + "sonar.sh console"
+    cmd = path.join(__server_binaries_folder + "sonar.sh console")
     os.system(cmd + " &") # & makes the command execute on the background
     # Makes a basic configuration
     configure("~/", "DefaultProjectKey")
@@ -37,7 +40,7 @@ def start_server():
 # Stops the server asynchronously
 # TODO optionnal callback
 def stop_server():
-    os.system(__server_binaries_folder + "sonar.sh stop &")
+    os.system(path.join(__server_binaries_folder + "sonar.sh") + " stop &")
 
 
 # Returns true if the server is up and ready to scan
@@ -65,8 +68,8 @@ def __wait_for_server_startup():
 # TODO make projectKey optionnal (to be able to change dir without changing key)
 # TODO find a solution for the Java binaries
 def configure(projectPath, projectKey):
-    path = __scanner_folder + "conf/sonar-scanner.properties"
-    file = open(path, "w+")
+    confPath = path.join(__scanner_folder, "conf/sonar-scanner.properties")
+    file = open(confPath, "w+")
     content = "sonar.projectKey=" + projectKey + "\n" \
               "sonar.projectBaseDir=" + projectPath + "\n" \
               "sonar.java.binaries=../../SonarQube/tmp"
@@ -77,7 +80,7 @@ def configure(projectPath, projectKey):
 # Runs an analysis (Blocking)
 # TODO make it asynchronous with callback
 def run_analysis():
-    cmd  = __scanner_folder + "bin/sonar-scanner"
+    cmd  = path.join(__scanner_folder, "bin/sonar-scanner")
     os.system(cmd)
 
 

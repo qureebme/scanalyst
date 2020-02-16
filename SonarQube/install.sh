@@ -19,3 +19,7 @@ rm $SERVER_PATH/sonarqube-$SERVER_VERSION.zip
 wget -P $SCANNER_PATH https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SCANNER_VERSION.zip
 unzip $SCANNER_PATH/sonar-scanner-cli-$SCANNER_VERSION.zip -d $SCANNER_PATH/
 rm $SCANNER_PATH/sonar-scanner-cli-$SCANNER_VERSION.zip
+
+# Gives the program the location of the server and the scanner
+echo "$PWD/$SERVER_PATH/sonarqube-$SERVER_VERSION" > sonarserver-folder
+echo "$PWD/$SCANNER_PATH/sonar-scanner-$SCANNER_VERSION" > sonarscanner-folder

@@ -20,7 +20,7 @@ fi
 
 # Checks if pip3 is installed
 echo "Checking PIP3 installation..."
-PIPV=`python -m pip --version`
+PIPV=`pip3 --version`
 if [[ -z "$PIPV" ]]
 then
     echo "ERROR: Please install PIP3 (Python3 package installer)"
