@@ -69,7 +69,7 @@ def checkRepo(url):
                 meta['branches']= commit.branches
                 meta['inMainBranch']= commit.in_main_branch
                 meta['committer']= commit.committer
-                meta['commiterDate']= commit.committer_date
+                meta['committerDate']= commit.committer_date
                 meta['parents']= commit.parents
                 meta['merge']= commit.merge
 
