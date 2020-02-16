@@ -72,7 +72,8 @@ def configure(projectPath, projectKey):
     file = open(confPath, "w+")
     content = "sonar.projectKey=" + projectKey + "\n" \
               "sonar.projectBaseDir=" + projectPath + "\n" \
-              "sonar.java.binaries=../../SonarQube/tmp"
+              "sonar.java.binaries=../../SonarQube/tmp\n" \
+              "sonar.scm.exclusions.disabled=true"
     file.write(content)
     file.close()
 
