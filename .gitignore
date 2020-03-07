@@ -1,9 +1,9 @@
 
 # Ignores the SonarQube folders because they are too large
 # They can be installed easily with SonarQube/install.sh
-SonarQube/sonarqube-*/
-.scannerwork/
-SonarQube/sonar-scanner-*/
+**/SonarQube/sonarqube-*/
+**/.scannerwork/
+**/SonarQube/sonar-scanner-*/
 
 #Emacs files
 *~
