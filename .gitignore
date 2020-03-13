@@ -14,3 +14,6 @@
 # Python trash files
 *.pyc
 __pycache__/
+
+# CheckStyle jar. Can be installed easily with CheckStyle/install.sh
+**/checkstyle-*
