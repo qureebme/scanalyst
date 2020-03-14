@@ -32,8 +32,14 @@ echo "Installing needed Python modules..."
 pip3 install gitpython
 pip3 install PyDriller
 
-# TODO 
-# JDK >= 11     (run "java --version" to check)
+# Checks the Java version
+echo "Checking Java version..."
+JAVAV=$(java -version 2>&1 | sed -E -n 's/.* version "([^.-]*).*"/\1/p' | cut -d' ' -f1)
+if [[ JAVAV -lt 11 ]]
+then
+    echo "ERROR: Please install JDK 11 or newer"
+    exit
+fi
 
 # Installs the analysers
 (cd SonarQube && ./install.sh)
