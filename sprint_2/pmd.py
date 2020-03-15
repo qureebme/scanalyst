@@ -46,4 +46,4 @@ def usePMD(code_dir):
     return dictList
 
 #usePMD('./code')
-print(usePMD('./java-project2017'))
+#print(usePMD('./java-project2017'))
