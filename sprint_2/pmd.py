@@ -1,5 +1,5 @@
 # The function takes a directory (e.g. /g12_1) as an argument.
-# Its output is a dict object about the PMD code analysis
+# Its output is a list of dictionaries about the PMD code analysis
 # of the java files in its 'main' directory (e.g. g12_1/main)
 
 # The commented lines of code are for possible modifications,
@@ -37,8 +37,13 @@ def usePMD(code_dir):
         #break
 
     #os.chdir('../') # comment
+    dictList = list()
+    
+    for x in dict_res:
+        val = dict_res.get(x)
+        dictList.append({x:val})
 
-    return dict_res
+    return dictList
 
 #usePMD('./code')
-#print(usePMD('./java-project2017'))
+print(usePMD('./java-project2017'))
