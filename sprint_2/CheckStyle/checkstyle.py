@@ -6,15 +6,16 @@ file = open("CheckStyle/checkstyle-jar-location", "r")
 __checkstyle_jar = file.read().replace("\n", "")
 file.close()
 
-__results_file = "CheckStyle/res";
+__results_file = "/tmp/checkstyleoutput.xml";
 
 # Runs the analysis on the given folder
 # CheckStyle will then store the results as xml in outputPath
 def __run_analysis(inputPath, outputPath):
-    files = os.path.join(inputPath, "*.java") + " " + os.path.join(inputPath, "**/*.java")
+    files = os.path.join(inputPath, "**/*.java")
     output = "-o " + outputPath + " -f xml"
     config = "-c /sun_checks.xml"
-    os.system("java -jar " + __checkstyle_jar +" "+ config +" "+ files +" "+ output)
+    cmd = "java -jar " + __checkstyle_jar +" "+ config +" "+ files +" "+ output
+    os.system(cmd)
 
 # Parses the xml to a dictionnary with the useful information
 def __parse_results(xmlFile):
@@ -33,7 +34,9 @@ def __parse_results(xmlFile):
                 "creationDate":"",
                 "startLine": error.get("line"),
                 "endLine": error.get("line"),
-                "resolution":"null"
+                "resolution":"null",
+                "component": f.get("name"),
+                "squid": ""
             }
             res.append(dic)
 
