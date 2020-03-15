@@ -37,8 +37,13 @@ def usePMD(code_dir):
         #break
 
     #os.chdir('../') # comment
+    dictList = list()
+    
+    for x in dict_res:
+        val = dict_res.get(x)
+        dictList.append({x:val})
 
-    return dict_res
+    return dictList
 
 #usePMD('./code')
 #print(usePMD('./java-project2017'))
