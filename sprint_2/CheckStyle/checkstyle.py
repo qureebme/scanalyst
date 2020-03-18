@@ -1,7 +1,7 @@
 import os
 import xml.etree.ElementTree as xml
 
-# Installation directory of sonar-scanner
+# Installation directory of checkstyle jar
 file = open("CheckStyle/checkstyle-jar-location", "r")
 __checkstyle_jar = file.read().replace("\n", "")
 file.close()
@@ -18,8 +18,7 @@ def __run_analysis(inputPath, outputPath):
     os.system(cmd)
 
 # Parses the xml to a dictionnary with the useful information
-def __parse_results(xmlFile):
-    res = []
+def __parse_results(xmlFile,pickUpMetaDataFun,path,output_data,commit_data):
     root = xml.parse(xmlFile).getroot()
     for f in root.findall("file"):
         for error in f.findall("error"):
@@ -38,13 +37,13 @@ def __parse_results(xmlFile):
                 "component": f.get("name"),
                 "squid": ""
             }
-            res.append(dic)
-
-    return res
+            pickUpmetaDataFun(dic,path,commit_data)
+            output_data.append(dic)
 
 # Analyses the given folder and returns the results as a dictionnary
-def analyse(path):
+def analyse(path,pickUpmetaDataFun,output_data,commit_data):
     __run_analysis(path, __results_file)
-    results = __parse_results(__results_file)
+    #results =
+    __parse_results(__results_file,pickUpmetaDataFun,path,output_data,commit_data)
     os.remove(__results_file)
-    return results
+    #return results

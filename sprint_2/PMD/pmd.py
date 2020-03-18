@@ -7,11 +7,16 @@
 
 import os, subprocess
 
-def usePMD(code_dir):
+# Reads the installation directory of pmd
+file = open("PMD/pmd-bin-location", "r")
+__pmdBinDir = file.read().replace("\n", "")
+file.close()
+
+def usePMD(code_dir,pickUpMetaDataFun,output_data,commit_data):
 
     if not os.path.isdir(code_dir):
         raise Exception(code_dir + ' is not a directory')
-    
+
     os.chdir(code_dir)
 
     #for folder in code_dir, run analysis
@@ -20,7 +25,7 @@ def usePMD(code_dir):
         #os.chdir(dir)   # comment
 
     #indent_start
-    cmd1 = 'pmd -d ' + os.getcwd() + '/src/main/ -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
+    cmd1 = os.path.join(__pmdBinDir, "run.sh ") + 'pmd -d ' + os.getcwd() + '/src/main/ -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
     res = subprocess.Popen(cmd1, shell=True, stdout=subprocess.PIPE).communicate()[0]
 
     res2 = res.decode('utf-8').split('\n') # \r\n on Windows
@@ -43,7 +48,7 @@ def usePMD(code_dir):
     #os.chdir('../') # comment
 
     dictList = list()
-    
+
     for x in dict_res:
         val = dict_res.get(x)
         dictList.append({x:val})

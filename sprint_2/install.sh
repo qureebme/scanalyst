@@ -44,6 +44,6 @@ fi
 # Installs the analysers
 (cd SonarQube && ./install.sh)
 (cd CheckStyle && ./install.sh)
-# TODO PMD
+(cd PMD && ./install.sh)
 
 echo "-- Installation successful --"
