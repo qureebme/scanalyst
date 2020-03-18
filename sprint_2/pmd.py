@@ -25,24 +25,30 @@ def usePMD(code_dir):
 
     res2 = res.decode('utf-8').split('\n') # \r\n on Windows
 
-    fields = res2[0].split(',')
-    values = res2[1].split(',')
+    #fields = res2[0].split(',')
+    fields = ['component', 'severity', 'startLine', 'message', 'resolution']
 
+    values = res2[1].split(',') # a list
+    values.pop(0)
+    values.pop(0)
+    values.pop(5)
+    
     dict_res = dict(zip(fields, values))
-    dict_res.pop('"Problem"')
-
+    
     os.chdir('../')
     #indent_end
 
         #break
 
     #os.chdir('../') # comment
+
     dictList = list()
     
     for x in dict_res:
         val = dict_res.get(x)
         dictList.append({x:val})
 
+    #dictList.append({'rule':'', 'status':'', 'effort':'', 'debt':'', 'type':'', 'creationDate':'', 'endLine':'', 'squid':''})
     return dictList
 
 #usePMD('./code')
