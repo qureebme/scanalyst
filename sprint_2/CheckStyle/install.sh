@@ -12,7 +12,7 @@ if [[ $response =~ ^(yes|y| ) ]] || [[ -z $response ]]
 then
 
     # Installs CheckStyle
-    echo "Installing SonarQube and Sonar Scanner..."
+    echo "Installing CheckStyle..."
     wget https://github.com/checkstyle/checkstyle/releases/download/checkstyle-$VERSION/checkstyle-$VERSION-all.jar
 
     # Gives the program the location of the server and the scanner

@@ -1,7 +1,7 @@
 import os
 import xml.etree.ElementTree as xml
 
-# Installation directory of sonar-scanner
+# Installation directory of checkstyle jar
 file = open("CheckStyle/checkstyle-jar-location", "r")
 __checkstyle_jar = file.read().replace("\n", "")
 file.close()
