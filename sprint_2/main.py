@@ -1,6 +1,27 @@
 import sys, csv, json, os, shutil
 
-def LaunchSQ(path):
+def pickUpMetaData(dic,path,commit_data):    
+    with open(path+'/MetaData.csv', mode='r') as infile:
+        reader = csv.reader(infile)
+        metaData = {rows[0]:rows[1] for rows in reader}
+        commit_data.append(metaData)               
+        dic["projectName"]=metaData["projectID"]
+        dic["creationCommitHash"]=metaData["commitHash"]
+        dic["author"]=metaData["author"]
+    return dic,commit_data
+
+def LaunchPMD(path,output_data,commit_data):
+    from PMD import pmd
+    pmd.usePMD(path,pickUpMetaData,output_data,commit_data)
+    
+    
+def LaunchCS(path,output_data,commit_data):
+    from CheckStyle import checkstyle as ch
+    ch.analyse(path,pickUpMetaData,output_data,commit_data)
+    
+
+
+def LaunchSQ(path,output_data,commit_data):
     from SonarQube import sonarqube as sq
     # Starts the server
     sq.start_server() # Blocking
@@ -35,12 +56,14 @@ def LaunchSQ(path):
             dic["endLine"]=i["textRange"]["endLine"]
         except Exception:
             pass
+        output_data.append(dic)
+        pickUpmetaData(dic,path,commit_data)
         
-    return dic
-
 
 Launch={
     "sonar":LaunchSQ
+    "checksyle":LaunchCS
+    "pmd":LaunchPMD
     }
 
 if len(sys.argv)<3:
@@ -53,26 +76,14 @@ scanner=sys.argv[2]
 import repo
 repo.checkRepo(sys.argv[1])
 
-
-
 output_data=[]
 commit_data=[]
+
 with os.scandir("./code/") as entries:
     
     for entry in entries:
-        with open("./code/"+entry.name+'/MetaData.csv', mode='r') as infile:
-            reader = csv.reader(infile)
-            metaData = {rows[0]:rows[1] for rows in reader}
-            commit_data.append(metaData)
-
-            dic=Launch[scanner]("./code/"+entry.name)
-        
-            dic["projectName"]=metaData["projectID"]
-            dic["creationCommitHash"]=metaData["commitHash"]
-            dic["author"]=metaData["author"]
-                
+            Launch[scanner]("./code/"+entry.name,output_data,commit_data)
             
-            output_data.append(dic)
 import ParsingToCsv as ptc
 
 fieldnames=["projectName","creationDate",

@@ -12,7 +12,7 @@ file = open("PMD/pmd-bin-location", "r")
 __pmdBinDir = file.read().replace("\n", "")
 file.close()
 
-def usePMD(code_dir):
+def usePMD(code_dir,pickUpMetaDataFun,output_data,commit_data):
 
     if not os.path.isdir(code_dir):
         raise Exception(code_dir + ' is not a directory')
