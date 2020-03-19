@@ -4,19 +4,19 @@
 # Each dictionary contains details about one code issue.
 
 import os, subprocess
-'''
+
 # Reads the installation directory of pmd
 file = open("PMD/pmd-bin-location", "r")
 __pmdBinDir = file.read().replace("\n", "")
 file.close()
-'''
+
 def usePMD(code_commit_dir,pickUpMetaDataFun,output_data,commit_data):
 
     if not os.path.isdir(code_commit_dir):
         raise Exception(code_commit_dir + ' is not a directory')
 
-    #cmd1 = os.path.join(__pmdBinDir, "run.sh ") + 'pmd -d ' + os.getcwd() + '/src/main/ -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
-    cmd1 = 'pmd -d ' + code_commit_dir + ' -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
+    cmd1 = os.path.join(__pmdBinDir, "run.sh ") + 'pmd -d ' + os.getcwd() + '/src/main/ -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
+    #cmd1 = 'pmd -d ' + code_commit_dir + ' -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
 
     output = subprocess.Popen(cmd1, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     res = output[0]
@@ -72,4 +72,3 @@ def cleanUpEntry(entry):
     else:
         return entry
 
-#print(usePMD('C:/Users/quree/OneDrive/Documents/TUT/D/SoftwareEngineeringMethodologies/g12/sprint_2/java-project2017'))
