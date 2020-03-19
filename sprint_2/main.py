@@ -11,7 +11,7 @@ def pickUpMetaData(dic,path,commit_data):
     return dic,commit_data
 
 def LaunchPMD(path,output_data,commit_data):
-    from PMD import pmd
+    from PMD import pmd2 as pmd
     pmd.usePMD(path,pickUpMetaData,output_data,commit_data)
     
     
@@ -56,15 +56,19 @@ def LaunchSQ(path,output_data,commit_data):
             dic["endLine"]=i["textRange"]["endLine"]
         except Exception:
             pass
-        output_data.append(dic)
+        
         pickUpmetaData(dic,path,commit_data)
+        output_data.append(dic)
         
 
 Launch={
-    "sonar":LaunchSQ
-    "checksyle":LaunchCS
+    "sonar":LaunchSQ,
+    "checksyle":LaunchCS,
     "pmd":LaunchPMD
     }
+sys.argv.append("main.py https://github.com/zeebe-io/zeebe-test-template-java")
+sys.argv.append("checksyle")
+
 
 if len(sys.argv)<3:
     raise ValueError ("The program expects a git URL followed by the scanner wanted as arguments")

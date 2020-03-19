@@ -10,7 +10,7 @@ file = open("PMD/pmd-bin-location", "r")
 __pmdBinDir = file.read().replace("\n", "")
 file.close()
 
-def usePMD(code_dir):
+def usePMD(code_dir,pickUpMetaDataFun,output_data,commit_data):
 
     if not os.path.isdir(code_dir):
         raise Exception(code_dir + ' is not a directory')
@@ -22,6 +22,7 @@ def usePMD(code_dir):
     output = subprocess.Popen(cmd1, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     res = output[0]
     err = output[1]
+    print(code_dir)
     if (err):
         print('PMD: something went wrong: ', err)
         return
@@ -46,10 +47,12 @@ def usePMD(code_dir):
         fullDict['debt'] = ""
         fullDict['creationDate'] = ""
         fullDict['squid'] = ""
-        dictList.append(fullDict)
+        
+        pickUpMetaDataFun(fullDict,code_dir,commit_data)
+        
+        output_data.append(fullDict)
 
     os.chdir('../')
-    return dictList
 
 def processIssues(issues):
     cleanedUp = []
