@@ -30,19 +30,21 @@ def __parse_results(xmlFile,pickUpMetaDataFun,path,output_data,commit_data):
     # Parses the results file
     root = xml.parse(xmlFile).getroot()
     for f in root.findall("file"):
+        filename = f.get("name")
+        filename = filename[len(path)+1:]
         for error in f.findall("error"):
             dic = {
-                "severity": error.get("severity"),
+                "severity": "",
                 "status":"",
                 "message": error.get("message"),
                 "effort":"",
                 "debt":"",
-                "type":"",
+                "type": error.get("severity"),
                 "creationDate":"",
                 "startLine": error.get("line"),
                 "endLine": error.get("line"),
                 "resolution":"null",
-                "component": f.get("name"),
+                "component": filename,
                 "squid": ""
             }
             pickUpMetaDataFun(dic,path,commit_data)
