@@ -10,21 +10,18 @@ file = open("PMD/pmd-bin-location", "r")
 __pmdBinDir = file.read().replace("\n", "")
 file.close()
 '''
-def usePMD(code_dir,pickUpMetaDataFun,output_data,commit_data):
+def usePMD(code_commit_dir,pickUpMetaDataFun,output_data,commit_data):
 
-    dir = code_dir
-    if not os.path.isdir(dir):
-        raise Exception(dir + ' is not a directory')
-
-    #os.chdir(dir)
+    if not os.path.isdir(code_commit_dir):
+        raise Exception(code_commit_dir + ' is not a directory')
 
     #cmd1 = os.path.join(__pmdBinDir, "run.sh ") + 'pmd -d ' + os.getcwd() + '/src/main/ -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
-    cmd1 = 'pmd -d ' + dir + ' -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
+    cmd1 = 'pmd -d ' + code_commit_dir + ' -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
 
     output = subprocess.Popen(cmd1, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     res = output[0]
     err = output[1]
-    #print(code_dir)
+
     if (err):
         print('PMD: something went wrong: ', err)
         return
@@ -34,8 +31,6 @@ def usePMD(code_dir,pickUpMetaDataFun,output_data,commit_data):
 
     fields = ['component', 'severity', 'startLine', 'resolution', 'type','rule'] # best fit
     values = processIssues(res2)
-
-    dictList = list()
 
     for item in values:
         fullDict = dict()
@@ -50,12 +45,10 @@ def usePMD(code_dir,pickUpMetaDataFun,output_data,commit_data):
         fullDict['creationDate'] = ""
         fullDict['squid'] = ""
         
-        pickUpMetaDataFun(fullDict,code_dir,commit_data)
+        pickUpMetaDataFun(fullDict,code_commit_dir,commit_data)
         
         output_data.append(fullDict)
 
-    #os.chdir('../')
-    return dictList
 
 def processIssues(issues):
     cleanedUp = []
@@ -79,5 +72,4 @@ def cleanUpEntry(entry):
     else:
         return entry
 
-#usePMD('/code')
-#print(usePMD('/java-project2017'))
+#print(usePMD('C:/Users/quree/OneDrive/Documents/TUT/D/SoftwareEngineeringMethodologies/g12/sprint_2/java-project2017'))
