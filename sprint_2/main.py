@@ -63,11 +63,12 @@ def LaunchSQ(path,output_data,commit_data):
 
 Launch={
     "sonar":LaunchSQ,
-    "checksyle":LaunchCS,
+    "checkstyle":LaunchCS,
     "pmd":LaunchPMD
     }
-sys.argv.append("main.py https://github.com/zeebe-io/zeebe-test-template-java")
-sys.argv.append("checksyle")
+sys.argv.append("https://github.com/zeebe-io/zeebe-test-template-java")
+sys.argv.append("pmd")
+cwd = os.getcwd()
 
 
 if len(sys.argv)<3:
@@ -86,7 +87,7 @@ commit_data=[]
 with os.scandir("./code/") as entries:
     
     for entry in entries:
-            Launch[scanner]("./code/"+entry.name,output_data,commit_data)
+        Launch[scanner](cwd+"/code/"+entry.name,output_data,commit_data)
             
 import ParsingToCsv as ptc
 
