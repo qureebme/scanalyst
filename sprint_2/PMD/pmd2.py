@@ -24,7 +24,7 @@ def usePMD(code_dir,pickUpMetaDataFun,output_data,commit_data):
     output = subprocess.Popen(cmd1, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     res = output[0]
     err = output[1]
-    print(code_dir)
+    #print(code_dir)
     if (err):
         print('PMD: something went wrong: ', err)
         return
