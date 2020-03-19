@@ -10,9 +10,9 @@ file = open("PMD/pmd-bin-location", "r")
 __pmdBinDir = file.read().replace("\n", "")
 file.close()
 '''
-def usePMD(code_dir):
+def usePMD(code_dir,pickUpMetaDataFun,output_data,commit_data):
 
-    dir = os.getcwd() + '/' + code_dir
+    dir = code_dir
     if not os.path.isdir(dir):
         raise Exception(dir + ' is not a directory')
 
@@ -50,9 +50,9 @@ def usePMD(code_dir):
         fullDict['creationDate'] = ""
         fullDict['squid'] = ""
         
-        #pickUpMetaDataFun(fullDict,code_dir,commit_data)
+        pickUpMetaDataFun(fullDict,code_dir,commit_data)
         
-        #output_data.append(fullDict)
+        output_data.append(fullDict)
 
     #os.chdir('../')
     return dictList
