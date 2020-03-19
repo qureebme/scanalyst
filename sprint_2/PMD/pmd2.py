@@ -24,6 +24,7 @@ def usePMD(code_dir):
     output = subprocess.Popen(cmd1, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     res = output[0]
     err = output[1]
+    #print(code_dir)
     if (err):
         print('PMD: something went wrong: ', err)
         return
@@ -48,7 +49,10 @@ def usePMD(code_dir):
         fullDict['debt'] = ""
         fullDict['creationDate'] = ""
         fullDict['squid'] = ""
-        dictList.append(fullDict)
+        
+        #pickUpMetaDataFun(fullDict,code_dir,commit_data)
+        
+        #output_data.append(fullDict)
 
     #os.chdir('../')
     return dictList
