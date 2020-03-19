@@ -66,8 +66,7 @@ Launch={
     "checkstyle":LaunchCS,
     "pmd":LaunchPMD
     }
-sys.argv.append("https://github.com/zeebe-io/zeebe-test-template-java")
-sys.argv.append("pmd")
+
 cwd = os.getcwd()
 
 
