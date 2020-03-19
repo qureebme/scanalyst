@@ -4,33 +4,21 @@
 # Each dictionary contains details about one code issue.
 
 import os, subprocess
-<<<<<<< HEAD
-=======
 
->>>>>>> 050c03b1fd72c2fe482b876157b14d92b9e93e70
 # Reads the installation directory of pmd
 file = open("PMD/pmd-bin-location", "r")
 __pmdBinDir = file.read().replace("\n", "")
 file.close()
-<<<<<<< HEAD
-=======
 
->>>>>>> 050c03b1fd72c2fe482b876157b14d92b9e93e70
 def usePMD(code_commit_dir,pickUpMetaDataFun,output_data,commit_data):
 
     if not os.path.isdir(code_commit_dir):
         raise Exception(code_commit_dir + ' is not a directory')
 
-<<<<<<< HEAD
     #cmd1 = os.path.join(__pmdBinDir, "run.sh ") + 'pmd -d ' + os.getcwd() + '/src/main/ -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
     #cmd1 = 'pmd -d ' + code_commit_dir + ' -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
     cmd1 = os.path.join(__pmdBinDir, "run.sh ") + 'pmd -d ' + code_commit_dir + ' -R rulesets/java/quickstart.xml -f csv -no-cache'
-    
-=======
-    cmd1 = os.path.join(__pmdBinDir, "run.sh ") + 'pmd -d ' + os.getcwd() + '/src/main/ -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
-    #cmd1 = 'pmd -d ' + code_commit_dir + ' -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
 
->>>>>>> 050c03b1fd72c2fe482b876157b14d92b9e93e70
     output = subprocess.Popen(cmd1, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     res = output[0]
     err = output[1]
@@ -42,13 +30,13 @@ def usePMD(code_commit_dir,pickUpMetaDataFun,output_data,commit_data):
     res2 = res.decode('utf-8').split('\n') # all code issues
     res2.pop(0)
 
-    fields = ['component', 'effort', 'startLine', 'message', 'type','message'] # best fit
+    fields = ['component', 'effort', 'startLine', 'message', 'type'] # best fit
     values = processIssues(res2)
 
     for item in values:
         fullDict = dict()
 
-        for index in range(0,6):
+        for index in range(0,5):
             fullDict[fields[index]] = item[index]
         fullDict['endLine'] = fullDict.get('startLine')
         fullDict['status'] = ""
