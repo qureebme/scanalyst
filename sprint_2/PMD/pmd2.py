@@ -4,20 +4,22 @@
 # Each dictionary contains details about one code issue.
 
 import os, subprocess
-
+'''
 # Reads the installation directory of pmd
 file = open("PMD/pmd-bin-location", "r")
 __pmdBinDir = file.read().replace("\n", "")
 file.close()
-
+'''
 def usePMD(code_dir):
 
-    if not os.path.isdir(code_dir):
-        raise Exception(code_dir + ' is not a directory')
+    dir = os.getcwd() + '/' + code_dir
+    if not os.path.isdir(dir):
+        raise Exception(dir + ' is not a directory')
 
-    os.chdir(code_dir)
+    #os.chdir(dir)
 
-    cmd1 = os.path.join(__pmdBinDir, "run.sh ") + 'pmd -d ' + os.getcwd() + '/src/main/ -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
+    #cmd1 = os.path.join(__pmdBinDir, "run.sh ") + 'pmd -d ' + os.getcwd() + '/src/main/ -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
+    cmd1 = 'pmd -d ' + dir + ' -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
 
     output = subprocess.Popen(cmd1, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     res = output[0]
@@ -48,7 +50,7 @@ def usePMD(code_dir):
         fullDict['squid'] = ""
         dictList.append(fullDict)
 
-    os.chdir('../')
+    #os.chdir('../')
     return dictList
 
 def processIssues(issues):
@@ -73,5 +75,5 @@ def cleanUpEntry(entry):
     else:
         return entry
 
-#usePMD('./code')
-#print(usePMD('./java-project2017'))
+#usePMD('/code')
+#print(usePMD('/java-project2017'))
