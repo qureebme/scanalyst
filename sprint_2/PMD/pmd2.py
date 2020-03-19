@@ -40,6 +40,12 @@ def usePMD(code_dir):
         for index in range(0,6):
             fullDict[fields[index]] = item[index]
         fullDict['endLine'] = fullDict.get('startLine')
+        fullDict['status'] = ""
+        fullDict['message'] = ""
+        fullDict['effort'] = ""
+        fullDict['debt'] = ""
+        fullDict['creationDate'] = ""
+        fullDict['squid'] = ""
         dictList.append(fullDict)
 
     os.chdir('../')
