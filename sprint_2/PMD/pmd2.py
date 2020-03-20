@@ -1,6 +1,6 @@
 # The main function (usePMD) takes a directory (e.g. /g12_1) as an argument.
 # Its output is a list of dictionaries about the PMD code analysis
-# of the java files in its 'main' directory (e.g. g12_1/main).
+# of the java files in code_commit_dir directory.
 # Each dictionary contains details about one code issue.
 
 import os, subprocess
@@ -15,9 +15,7 @@ def usePMD(code_commit_dir,pickUpMetaDataFun,output_data,commit_data):
     if not os.path.isdir(code_commit_dir):
         raise Exception(code_commit_dir + ' is not a directory')
 
-    #cmd1 = os.path.join(__pmdBinDir, "run.sh ") + 'pmd -d ' + os.getcwd() + '/src/main/ -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
-    #cmd1 = 'pmd -d ' + code_commit_dir + ' -R rulesets/java/quickstart.xml -f csv -no-cache'    #default rulesets
-    cmd1 = os.path.join(__pmdBinDir, "run.sh ") + 'pmd -d ' + code_commit_dir + ' -R rulesets/java/quickstart.xml -f csv -no-cache'
+    cmd1 = os.path.join(__pmdBinDir, "run.sh ") + 'pmd -d ' + code_commit_dir + ' -R rulesets/java/quickstart.xml -f csv -no-cache' #default rulesets
 
     output = subprocess.Popen(cmd1, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     res = output[0]
@@ -70,6 +68,8 @@ def cleanUpEntry(entry):
         merge = entry[3] + ', ' + entry[4]
         del entry[3:5]
         entry.insert(3, merge)
+        entry = entry.replace('"', '')
+
         return entry
     else:
         return entry
