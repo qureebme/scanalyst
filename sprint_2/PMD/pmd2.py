@@ -72,5 +72,6 @@ def cleanUpEntry(entry):
 
         return entry
     else:
+        entry = entry.replace('"', '')
         return entry
 
