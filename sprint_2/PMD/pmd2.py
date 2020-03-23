@@ -68,10 +68,10 @@ def cleanUpEntry(entry):
         merge = entry[3] + ', ' + entry[4]
         del entry[3:5]
         entry.insert(3, merge)
-        entry = entry.replace('"', '')
+        #entry = entry.replace('"', '')
 
         return entry
     else:
-        entry = entry.replace('"', '')
+        #entry = entry.replace('"', '')
         return entry
 
