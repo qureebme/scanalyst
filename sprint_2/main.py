@@ -57,7 +57,7 @@ def LaunchSQ(path,output_data,commit_data):
         except Exception:
             pass
         
-        pickUpmetaData(dic,path,commit_data)
+        pickUpMetaData(dic,path,commit_data)
         output_data.append(dic)
         
 
@@ -86,7 +86,10 @@ commit_data=[]
 with os.scandir("./code/") as entries:
     
     for entry in entries:
-        Launch[scanner](cwd+"/code/"+entry.name,output_data,commit_data)
+        try:
+            Launch[scanner](cwd+"/code/"+entry.name,output_data,commit_data)
+        except:
+            print('Metadata.csv not found in ', entry)
             
 import ParsingToCsv as ptc
 
