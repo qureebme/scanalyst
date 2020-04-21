@@ -11,10 +11,18 @@ Authors:
 
 ## Installation
 
-Run this in a terminal (in the same directory as this file)
-./install.sh
+First:
+    In /SonarQube/sonarscannerfolder and /SonarQube/sonarscannerfolder, replace /home/qureeb/Documents/TUT/SEM/ in the paths to the corresponding directory on your PC
+    
+Then:
+    Run this in a terminal (in the same directory as this file)
+    ./install.sh
 
 ## Usage
 
 Run this in a terminal (in the same directory as this file)
-python3 main.py url-to-your-repo
+python3 main.py <url-to-your-repo> <code-analysis-tool>
+
+code-analysis-tool is one of pmd, sonar, or checkstyle
+
+
