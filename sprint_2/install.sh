@@ -42,8 +42,8 @@ then
 fi
 
 # Installs the analysers
-(cd SonarQube && ./install.sh)
-(cd CheckStyle && ./install.sh)
-(cd PMD && ./install.sh)
+(cd SonarQube && chmod 777 install.sh && ./install.sh)
+(cd CheckStyle && chmod 777 install.sh && ./install.sh)
+(cd PMD && chmod 777 install.sh && ./install.sh)
 
 echo "-- Installation successful --"
