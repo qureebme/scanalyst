@@ -12,11 +12,11 @@ Authors:
 ## Installation
 
 First:
-    In /SonarQube/sonarscannerfolder and /SonarQube/sonarscannerfolder, replace /home/qureeb/Documents/TUT/SEM/ in the paths to the corresponding directory on your PC
+    In /SonarQube/sonarscanner-folder and /SonarQube/sonarserver-folder, replace '/home/qureeb/Documents/codebook/snapcraft/PySnap' in the paths to the corresponding path on your PC
     
 Then:
     Run this in a terminal (in the same directory as this file)
-    ./install.sh
+    ./sprint_2/install.sh
 
 ## Usage
 
