@@ -4,12 +4,12 @@
 
 # Checks if Python >= 3.0 is installed
 echo "Checking Python version (>= 3.0 is needed)..."
-PYV=`python3 -c '\
-import sys;\
-import platform;\
-major, minor, patch = platform.python_version_tuple();\
-sys.stdout.write("OK" if (int(major) >= 3 and int(minor) >= 0) else "");\
-'`
+# PYV=`python3 -c '\
+# import sys;\
+# import platform;\
+# major, minor, patch = platform.python_version_tuple();\
+# sys.stdout.write("OK" if (int(major) >= 3 and int(minor) >= 0) else "");\
+# '`
 # If the above command couldn't execute then PYV = ""
 # If it executed but the version is less than 3.0 then PYV = ""
 if [[ -z "$PYV" ]]
@@ -51,12 +51,12 @@ else
 fi
 
 # Installs the analysers
-(cd sprint_2/SonarQube && chmod 777 install.sh && ./install.sh)
-if [[ $? -ne 0 ]]
-then
-    echo "FAILURE: could not install SonarQube"
-    exit
-fi
+# (cd sprint_2/SonarQube && chmod 777 install.sh && ./install.sh)
+# if [[ $? -ne 0 ]]
+# then
+#     echo "FAILURE: could not install SonarQube"
+#     exit
+# fi
 #(cd CheckStyle && chmod 777 install.sh && ./install.sh)
 #(cd PMD && chmod 777 install.sh && ./install.sh)
 
