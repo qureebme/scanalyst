@@ -27,3 +27,6 @@
 # Python trash files
 *.pyc
 _pycache__/
+
+# snap files
+*.snap
